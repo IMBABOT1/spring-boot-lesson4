@@ -2,14 +2,13 @@ package ru.geekbrains.spring1.lesson4.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.spring1.lesson4.Entities.Product;
 import ru.geekbrains.spring1.lesson4.Services.ProductService;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class ProductController {
 
     private ProductService productService;
@@ -21,9 +20,19 @@ public class ProductController {
 
 
     @GetMapping("/products")
-    @ResponseBody
     public List<Product> getAllProducts(){
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/products/delete/{id}")
+    public void deleteProductById(@PathVariable Long id){
+        productService.deleteProductById(id);
+    }
+
+
+    @GetMapping("/products/change_price")
+    public void changeScore(@RequestParam Long productId, @RequestParam Integer delta) {
+        productService.changePrice(productId, delta);
     }
 
 }

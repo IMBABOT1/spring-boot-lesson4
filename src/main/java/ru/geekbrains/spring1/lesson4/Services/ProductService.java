@@ -22,7 +22,15 @@ public class ProductService {
     }
 
     public Product findProductByID(Long id){
-        return productRepository.findProductByID(id);
+        return productRepository.findById(id);
     }
 
+    public void deleteProductById(Long id){
+        productRepository.deleteProductById(id);
+    }
+
+    public void changePrice(Long productId, Integer delta) {
+        Product product = productRepository.findById(productId);
+        product.setPrice(product.getPrice() + delta);;
+    }
 }
