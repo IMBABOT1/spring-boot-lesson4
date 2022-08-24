@@ -1,13 +1,15 @@
 package ru.geekbrains.spring1.lesson4.Repository;
 
+import jakarta.transaction.NotSupportedException;
 import org.springframework.stereotype.Repository;
 import ru.geekbrains.spring1.lesson4.Entities.Product;
 
 import javax.annotation.PostConstruct;
+
 import java.util.*;
 
 @Repository
-public class ProductRepository {
+public class InMemoryRepository implements ProductDao {
 
     private List<Product> products;
 
@@ -22,10 +24,12 @@ public class ProductRepository {
         ));
     }
 
-    public List<Product> getAllProducts(){
+    @Override
+    public List<Product> findAll(){
         return Collections.unmodifiableList(products);
     }
 
+    @Override
     public Product findById(Long id) {
         for (Product p : products){
             if (p.getId() == id){
@@ -35,7 +39,8 @@ public class ProductRepository {
         throw new RuntimeException("Product not found");
     }
 
-    public void deleteProductById(Long id){
+    @Override
+    public void deleteById(Long id){
         Iterator<Product> iter = products.iterator();
         while (iter.hasNext()){
             Product p = iter.next();
@@ -43,5 +48,10 @@ public class ProductRepository {
                 iter.remove();
             }
         }
+    }
+
+    @Override
+    public Product saveOrUpdate(Product product) throws NotSupportedException {
+        throw new NotSupportedException();
     }
 }
